@@ -22,7 +22,7 @@ public class Servidor extends ConexionSP {
     private Socket socket;
     private Socket Cliente;
     private DataOutputStream Salida;
-    private DataInputStream Entrada;
+    private DataInputStream Entrada, Entrada2;
     public static ServerSocket servidor = null;
     public static ServerSocket ss;
     public static String IpCliente = null;
@@ -49,9 +49,12 @@ public class Servidor extends ConexionSP {
                System.out.println("Un Fumador se ha conectado...");            
                // Creamos flujo de entrada para leer los datos que envia el cliente 
                Entrada = new DataInputStream( Cliente.getInputStream() );
-               String Protocolo = Entrada.readUTF();
-               System.out.println("Bienvenido Fumar: "+Protocolo);
-               //Ingredientes();
+               String Nombre = Entrada.readUTF();
+               System.out.println("Bienvenido Fumador: "+Nombre);
+               Ingredientes();
+               
+               Entrada2 = new DataInputStream( Cliente.getInputStream() );
+               String Protocolo = Entrada2.readUTF();
                int Operacion = Integer.parseInt(Protocolo);
                switch (Operacion)
                {
@@ -59,18 +62,24 @@ public class Servidor extends ConexionSP {
                        socket = new Socket( IpServidor, PuertoServidor );
                        System.out.println(socket);
                        Saliendo = new DataOutputStream(socket.getOutputStream());
-                       Saliendo.writeUTF("Surtir");
+                       Saliendo.writeUTF("Surtir");  
                        
-                   break;
-                   case 1:
-                       DataOutputStream Salida1 = new DataOutputStream(Cliente.getOutputStream());
-                       Salida1.writeUTF(String.valueOf(Papel));
+                       Entrando = new DataInputStream(socket.getInputStream());
+                       String producto  = Entrando.readUTF();
+                       Entrandos = new DataInputStream(socket.getInputStream());
+                       String productos  = Entrandos.readUTF();
                        
-                       DataOutputStream Salida2 = new DataOutputStream(Cliente.getOutputStream());
-                       Salida2.writeUTF(String.valueOf(Tabaco));
-                       
-                       DataOutputStream Salida3 = new DataOutputStream(Cliente.getOutputStream());
-                       Salida3.writeUTF(String.valueOf(Fosforo));                      
+                       if(producto.equals("1"))
+                       {
+                           Tabaco = Tabaco +1;
+                           System.out.println("Agregando Producto Tabaco: "+Tabaco);
+                       }
+                       if(productos.equals("1"))
+                       {
+                           Tabaco = Tabaco +1;
+                           System.out.println("Agregando Producto Tabaco: "+Tabaco);
+                       }
+
                    break;
                        
                }
@@ -81,9 +90,24 @@ public class Servidor extends ConexionSP {
             }
     }
     
-    public static void Ingredientes()
+    public void Ingredientes()
     {
-        
+        try
+        {
+           DataOutputStream Salida1 = new DataOutputStream(Cliente.getOutputStream());
+           Salida1.writeUTF(String.valueOf(Papel));
+
+           DataOutputStream Salida2 = new DataOutputStream(Cliente.getOutputStream());
+           Salida2.writeUTF(String.valueOf(Tabaco));
+
+           DataOutputStream Salida3 = new DataOutputStream(Cliente.getOutputStream());
+           Salida3.writeUTF(String.valueOf(Fosforo));    
+        }
+        catch(Exception e)
+        {
+          System.out.println( e.toString() );   
+        }
+ 
         
     }
 }
