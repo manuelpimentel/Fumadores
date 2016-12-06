@@ -6,6 +6,11 @@
 
 package View;
 
+import Controller.ConexionF;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author David
@@ -107,7 +112,19 @@ public class Preferencias extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         ip = jTextField1.getText();
-        puerto = Integer.parseInt(jTextField2.getText());        // TODO add your handling code here:
+        puerto = Integer.parseInt(jTextField2.getText());          
+        try 
+        {
+            ConexionF conexion = new ConexionF(Preferencias.ip,Preferencias.puerto);
+            conexion.start();           
+        } 
+        catch (IOException ex) 
+        {
+            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        VentanaPrincipal conexion = new VentanaPrincipal();
+        conexion.setVisible(true);
+        this.dispose();       // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

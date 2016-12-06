@@ -26,8 +26,11 @@ public class ConexionF extends Thread {
     public static Socket socket;
     public static ServerSocket servidor = null;
     public static ServerSocket servidord = null;
+    public static int Tabaco = 1;
+    public static int Papel;
+    public static int Fosforo;
     protected Socket sc;
-    protected DataOutputStream Salida;
+    protected DataOutputStream Salida, Salida2;
     protected DataInputStream Entrada;
     
     public ConexionF (String IpServidor, int PuertoServidor)throws IOException
@@ -35,17 +38,16 @@ public class ConexionF extends Thread {
        this.IpServidor = IpServidor;
        this.PuertoServidor = PuertoServidor;               
     }
-    //@Override
-    public void run(String Protocolo)
+    @Override
+    public void run()
     {        
         try
         {
             System.out.println("Fumador");
             // Creamos el Socket con la direccion y elpuerto de comunicacion
             socket = new Socket( IpServidor, PuertoServidor );
-            System.out.println(socket);
             Salida = new DataOutputStream(socket.getOutputStream());
-            Salida.writeUTF(Protocolo);
+            Salida.writeUTF("Señor Fumador 1");
             Ingredientes();
           }
           catch( Exception e )
@@ -58,18 +60,29 @@ public class ConexionF extends Thread {
     {
         DataInputStream Entrada1 = new DataInputStream(socket.getInputStream());
         String Paper = Entrada1.readUTF();
-        int Papel = Integer.parseInt(Paper);
-        
-        DataInputStream Entrada2 = new DataInputStream(socket.getInputStream());
-        String Tabac = Entrada1.readUTF();
-        int Tabaco = Integer.parseInt(Tabac);
+        Papel = Integer.parseInt(Paper);
         
         DataInputStream Entrada3 = new DataInputStream(socket.getInputStream());
         String Fosfo = Entrada3.readUTF();
-        int Fosforo = Integer.parseInt(Fosfo);
+        Fosforo = Integer.parseInt(Fosfo);
         
         System.out.println("Papel Disponible: "+Papel);
-        System.out.println("Tabaco Disponible: "+Tabaco);
         System.out.println("Fosforo Disponible: "+Fosforo);
+    }
+    
+    public void PedirIngredientes(String Protocolo) throws IOException
+    {  
+        System.out.println("Agarrando Ingrediente...");
+        
+        if (Protocolo.equals("0"))
+        {
+        Salida2 = new DataOutputStream(socket.getOutputStream());
+        Salida2.writeUTF(Protocolo);
+
+//        Entrada = new DataInputStream(socket.getInputStream());
+//        String Cantidad = Entrada.readUTF();
+//
+//        System.out.println("Tabaco Disponible: "+Cantidad);
+        }
     }
 }
