@@ -22,7 +22,7 @@ public class VendedorCliente {
     public static void main(String[] args) {
         try {
             // TODO code application logic here
-            new Controller.ConexionV().run();
+            new Controller.ConexionV().start();
         } catch (IOException ex) {
             Logger.getLogger(VendedorCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
