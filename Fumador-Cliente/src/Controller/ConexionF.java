@@ -6,7 +6,6 @@
 
 package Controller;
 
-import com.sun.org.apache.bcel.internal.util.ByteSequence;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -26,9 +25,9 @@ public class ConexionF extends Thread {
     public static Socket socket;
     public static ServerSocket servidor = null;
     public static ServerSocket servidord = null;
-    public static int Tabaco = 1;
-    public static int Papel;
-    public static int Fosforo;
+    public int Tabaco = 1;
+    public static int Papel = 0;
+    public static int Fosforo = 0;
     protected Socket sc;
     protected DataOutputStream Salida, Salida2;
     protected DataInputStream Entrada;
@@ -49,6 +48,7 @@ public class ConexionF extends Thread {
             Salida = new DataOutputStream(socket.getOutputStream());
             Salida.writeUTF("Señor Fumador 1");
             Ingredientes();
+            //Fumar(Papel,Fosforo);
           }
           catch( Exception e )
           {
@@ -60,14 +60,14 @@ public class ConexionF extends Thread {
     {
         DataInputStream Entrada1 = new DataInputStream(socket.getInputStream());
         String Paper = Entrada1.readUTF();
-        Papel = Integer.parseInt(Paper);
+        int Papels = Integer.parseInt(Paper);
         
         DataInputStream Entrada3 = new DataInputStream(socket.getInputStream());
         String Fosfo = Entrada3.readUTF();
-        Fosforo = Integer.parseInt(Fosfo);
+        int Fosforos = Integer.parseInt(Fosfo);
         
-        System.out.println("Papel Disponible: "+Papel);
-        System.out.println("Fosforo Disponible: "+Fosforo);
+        System.out.println("Papel Disponible: "+Papels);
+        System.out.println("Fosforo Disponible: "+Fosforos);
     }
     
     public void PedirIngredientes(String Protocolo) throws IOException
@@ -83,6 +83,31 @@ public class ConexionF extends Thread {
 //        String Cantidad = Entrada.readUTF();
 //
 //        System.out.println("Tabaco Disponible: "+Cantidad);
+        }
+        //falta decirle al servidor descontar este ingredientes
+        if (Protocolo.equals("2"))
+        {
+          Papel = Papel+1; 
+          //System.out.println(Papel);
+        }
+         //falta decirle al servidor descontar este ingredientes       
+        if (Protocolo.equals("3"))
+        {
+           Fosforo = Fosforo+1; 
+           //System.out.println(Fosforo);
+        }
+        Fumar(Papel,Fosforo);
+    }
+    
+    public void Fumar(int papel, int fosforo)
+    {
+        if ((papel==1) && (fosforo==1))
+        {
+            System.out.println("Fumando Cigarros...");
+        }
+        else
+        {
+            System.out.println("Ingredientes Aun No Completos Para Fumar...");
         }
     }
 }
