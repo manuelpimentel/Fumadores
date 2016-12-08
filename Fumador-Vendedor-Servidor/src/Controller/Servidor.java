@@ -28,9 +28,9 @@ public class Servidor extends ConexionSP {
     public static String IpCliente = null;
     public static int PuertoCliente = 0;
     public static int puerto = 1234;
-    public static int Papel = 2;
-    public static int Tabaco = 2;
-    public static int Fosforo = 2;
+    public static int Tabaco = 1;
+    public static int Papel = 1;
+    public static int Fosforo = 1;
     
     public Servidor() throws IOException
     {
@@ -58,7 +58,8 @@ public class Servidor extends ConexionSP {
                int Operacion = Integer.parseInt(Protocolo);
                switch (Operacion)
                {
-                   case 0: //Llenar Banco                          
+                   case 0: //Llenar Banco 
+                       //public void Surtir(){
                        socket = new Socket( IpServidor, PuertoServidor );
                        System.out.println(socket);
                        Saliendo = new DataOutputStream(socket.getOutputStream());
@@ -71,15 +72,35 @@ public class Servidor extends ConexionSP {
                        
                        if(producto.equals("1"))
                        {
-                           Tabaco = Tabaco +1;
+                           Tabaco = Tabaco + 1;
                            System.out.println("Agregando Producto Tabaco: "+Tabaco);
                        }
                        if(productos.equals("1"))
                        {
-                           Tabaco = Tabaco +1;
+                           Tabaco = Tabaco + 1;
                            System.out.println("Agregando Producto Tabaco: "+Tabaco);
                        }
-
+                       if(producto.equals("2"))
+                       {
+                           Papel = Papel + 1;
+                           System.out.println("Agregando Producto Papel: "+Papel);
+                       }
+                       if(productos.equals("2"))
+                       {
+                           Papel = Papel +1;
+                           System.out.println("Agregando Producto Papel: "+Papel);
+                       }
+                       if(producto.equals("3"))
+                       {
+                           Fosforo = Fosforo +1;
+                           System.out.println("Agregando Producto Fosforo: "+Fosforo);
+                       }
+                       if(productos.equals("3"))
+                       {
+                           Fosforo = Fosforo +1;
+                           System.out.println("Agregando Producto Fosforo: "+Fosforo);
+                       }
+                       //}
                    break;
                        
                }
